@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/logo.png">
+    <title>Netflix</title>
+</head>
+<body>
+    <div class="upper">
+        <div class="logo">
+            <a href="#">
+                <img src="img/Netflix-Logo.png" class="img-logo"/>
+            </a>
+        </div>
+        <div class="login-div">
+            <form class="login">
+                <h1>Inicia sesión</h1>
+                <div class="input-text">
+                    <input type="text"  style="background-color: rgba(0, 0, 0, 0.6);" id="inputEmail" name="email" placeholder="Correo electrónico o número de teléfono" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)"/>
+                    <div class="warning-input" id="warningEmail">
+                        Por favor, ingresa un correo electrónico o número de teléfono válido.
+                    </div>
+                </div>
+                
+                <div class="input-text">
+                    <input type="password"  style="background-color: rgba(0, 0, 0, 0.6);" id="inputPassword" name="password" placeholder="Contraseña" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)"/>
+                    <div class="warning-input" id="warningPassword">
+                        Tu contraseña debe contener entre 4 y 60 caracteres.
+                    </div>
+                </div>
+                
+                <div>
+                    <button class="signin-button">Iniciar sesión</button>
+                </div>
+                <div>
+                    
+                </div>
+                <div>
+                    <button class="signin-button">Iniciar sesión</button>
+                </div>
+                <div class="remember-flex">
+                    <div>
+                        <input type="checkbox">
+                        <label class="color_text">Recuérdame</label>
+                    </div>
+                    <div class="help">
+                        <a class="color_text" href="#">¿Necesitas ayuda?</a>
+                    </div>
+                </div>
+                <br>
+                <div class="new-members">
+                    ¿Primera vez en Netflix? <a href="#" class="signup-link">Suscríbete ahora</a>.
+                </div>
+                <div class="protection color_link help">
+                    Esta página está protegida por Google reCAPTCHA para comprobar que no eres un robot. <a href="#" style="color: #0071eb;">Más info.</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="bottom-width">
+            ¿Preguntas? Llama al <a href="tel:1-844-542-4813" class="tel-link">1-844-542-4813</a>
+            <div>
+                <ul class="bottom-flex">
+                    <li class="list-bottom">
+                        <a href="#" class="link-bottom">
+                            Preguntas Frecuentes
+                        </a>
+                    </li>
+                    <li class="list-bottom">
+                        <a href="#" class="link-bottom">
+                            Centro de ayuda
+                        </a>
+                    </li>
+                    <li class="list-bottom">
+                        <a href="#" class="link-bottom">
+                            Términos de uso
+                        </a>
+                    </li>
+                    <li class="list-bottom">
+                        <a href="#" class="link-bottom">
+                            Privacidad
+                        </a>
+                    </li>
+                    <li class="list-bottom">
+                        <a href="#" class="link-bottom">
+                            Preferencias de cookies
+                        </a>
+                    </li>
+                    <li class="list-bottom">
+                        <a href="#" class="link-bottom">
+                            Información corporativa
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <select class="fa select-language">
+                    <option> &#xf0ac; &nbsp;&nbsp;&nbsp;Español</option>
+                    <option> &#xf0ac; &nbsp;&nbsp;&nbsp;Inglés</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
