@@ -8,6 +8,34 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="img/logo.png">
     <title>Netflix</title>
+    <style>
+        /* Estilo para campos de entrada con bordes blancos al seleccionarlos */
+        .input-text input:focus {
+            border: 2px solid white; /* Cambia el borde a blanco al seleccionar el campo */
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo más oscuro cuando está seleccionado */
+        }
+
+        /* Estilo para resaltar en rojo los campos con errores */
+        .input-error {
+            border: 2px solid red;
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+
+        /* Estilo para los mensajes de advertencia */
+        .warning-input {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+
+        /* Mensaje de funcionalidad no disponible */
+        #noCodeFunctionality {
+            color: white;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="upper">
@@ -17,15 +45,14 @@
             </a>
         </div>
         <div class="login-div">
-            <form class="login">
+            <form class="login" id="loginForm" onsubmit="return validateForm()">
                 <h1>Inicia sesión</h1>
-                <div class="input-text">
-                    <input type="text"  style="background-color: rgba(0, 0, 0, 0.6);" id="inputEmail" name="email" placeholder="Correo electrónico o número de teléfono" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)"/>
+                <div class="input-text" id="emailWrapper">
+                    <input type="text" style="background-color: rgba(0, 0, 0, 0.6);" id="inputEmail" name="email" placeholder="Correo electrónico o número de teléfono" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)" />
                     <div class="warning-input" id="warningEmail">
                         Por favor, ingresa un correo electrónico o número de teléfono válido.
                     </div>
                 </div>
-                <!-- Campo de contraseña -->
                 <div class="input-text" id="passwordWrapper">
                     <input type="password" style="background-color: rgba(0, 0, 0, 0.6);" id="inputPassword" name="password" placeholder="Contraseña" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)" />
                     <div class="warning-input" id="warningPassword">
@@ -33,16 +60,25 @@
                     </div>
                 </div>
 
-                <!-- Botón de Iniciar sesión -->
+                <!-- Mensaje de funcionalidad no disponible arriba del botón de iniciar sesión -->
+                <div id="noCodeFunctionality" style="display:none;">
+                    Actualmente no tenemos esta funcionalidad, inténtelo luego.
+                </div>
+
                 <div id="loginButtonWrapper">
                     <button class="signin-button" id="signinButton">Iniciar sesión</button>
                 </div>
 
-                <!-- Botón para usar código de inicio de sesión -->
-                <div>
-                    <button class="signin-button-code" id="signinCodeButton" onclick="toggleCodeLogin()">Usar un código de inicio de sesión</button>
+                <!-- Separador O entre los botones -->
+                <div style="text-align: center; margin: 15px 0;">
+                    <span style="font-size: 16px; color: white;">O</span>
                 </div>
-               
+
+                <!-- Botón para cambiar entre las opciones de inicio de sesión -->
+                <div id="signinToggleWrapper">
+                    <button class="signin-button-code" id="signinToggleButton" onclick="toggleLoginMethod(event)">Usar un código de inicio de sesión</button>
+                </div>
+
                 <div class="remember-flex">
                     <div>
                         <input type="checkbox">
@@ -51,7 +87,7 @@
                 </div>
                 <br>
                 <div class="new-members">
-                    ¿Primera vez en Netflix? <a href="#" class="signup-link">Suscríbete ahora</a>.
+                    ¿Primera vez en Netflix? <a href="#" class="signup-link">Suscríbete ahora</a> .
                 </div>
                 <div class="protection color_link help">
                     Esta página está protegida por Google reCAPTCHA para comprobar que no eres un robot. <a href="#" style="color: #0071eb;">Más info.</a>
@@ -59,40 +95,29 @@
             </form>
         </div>
     </div>
+
     <div class="bottom">
         <div class="bottom-width">
             ¿Preguntas? Llama al <a href="tel:1-844-542-4813" class="tel-link"> 1 (408) 469-4467 (USA)</a>
             <div>
                 <ul class="bottom-flex">
                     <li class="list-bottom">
-                        <a href="#" class="link-bottom">
-                            Preguntas Frecuentes
-                        </a>
+                        <a href="#" class="link-bottom">Preguntas Frecuentes</a>
                     </li>
                     <li class="list-bottom">
-                        <a href="#" class="link-bottom">
-                            Centro de ayuda
-                        </a>
+                        <a href="#" class="link-bottom">Centro de ayuda</a>
                     </li>
                     <li class="list-bottom">
-                        <a href="#" class="link-bottom">
-                            Términos de uso
-                        </a>
+                        <a href="#" class="link-bottom">Términos de uso</a>
                     </li>
                     <li class="list-bottom">
-                        <a href="#" class="link-bottom">
-                            Privacidad
-                        </a>
+                        <a href="#" class="link-bottom">Privacidad</a>
                     </li>
                     <li class="list-bottom">
-                        <a href="#" class="link-bottom">
-                            Preferencias de cookies
-                        </a>
+                        <a href="#" class="link-bottom">Preferencias de cookies</a>
                     </li>
                     <li class="list-bottom">
-                        <a href="#" class="link-bottom">
-                            Información corporativa
-                        </a>
+                        <a href="#" class="link-bottom">Información corporativa</a>
                     </li>
                 </ul>
             </div>
@@ -104,6 +129,90 @@
             </div>
         </div>
     </div>
-    <script src="js/script.js"></script>
+
+    <script>
+        // Función para cambiar entre las opciones de inicio de sesión (email vs código)
+        function toggleLoginMethod(event) {
+            event.preventDefault();  // Prevenir la acción por defecto del botón
+
+            const emailWrapper = document.getElementById('emailWrapper');
+            const passwordWrapper = document.getElementById('passwordWrapper');
+            const signinToggleButton = document.getElementById('signinToggleButton');
+            const noCodeFunctionality = document.getElementById('noCodeFunctionality');
+            const warningEmail = document.getElementById('warningEmail');
+            const warningPassword = document.getElementById('warningPassword');
+
+            // Alternar entre las dos opciones
+            if (signinToggleButton.innerText === 'Usar un código de inicio de sesión') {
+                signinToggleButton.innerText = 'Usar contraseña';  // Cambiar el texto del botón
+                passwordWrapper.style.display = 'none';  // Ocultar la sección de contraseña
+                emailWrapper.disabled = true;  // Deshabilitar el campo de correo
+                noCodeFunctionality.style.display = 'block';  // Mostrar el mensaje de funcionalidad no disponible
+
+                // Resetear y ocultar los mensajes de advertencia
+                warningEmail.style.display = 'none';
+                warningPassword.style.display = 'none';
+                document.getElementById('inputEmail').value = '';  // Limpiar el campo de correo
+            } else {
+                signinToggleButton.innerText = 'Usar un código de inicio de sesión';  // Restaurar el texto del botón
+                passwordWrapper.style.display = 'block';  // Mostrar la sección de contraseña
+                emailWrapper.disabled = false;  // Habilitar el campo de correo
+                noCodeFunctionality.style.display = 'none';  // Ocultar el mensaje de funcionalidad no disponible
+
+                // Resetear y ocultar los mensajes de advertencia
+                warningEmail.style.display = 'none';
+                warningPassword.style.display = 'none';
+                document.getElementById('inputPassword').value = '';  // Limpiar el campo de contraseña
+            }
+        }
+
+        // Validación de campos
+        function validateForm() {
+            let isValid = true;
+
+            // Validación del email
+            const emailInput = document.getElementById('inputEmail');
+            const emailWarning = document.getElementById('warningEmail');
+            if (emailInput.value.trim() === '') {
+                emailInput.classList.add('input-error');
+                emailWarning.style.display = 'block';
+                isValid = false;
+            } else {
+                emailInput.classList.remove('input-error');
+                emailWarning.style.display = 'none';
+            }
+
+            // Validación de la contraseña
+            const passwordInput = document.getElementById('inputPassword');
+            const passwordWarning = document.getElementById('warningPassword');
+            if (passwordInput.value.trim() === '') {
+                passwordInput.classList.add('input-error');
+                passwordWarning.style.display = 'block';
+                isValid = false;
+            } else {
+                passwordInput.classList.remove('input-error');
+                passwordWarning.style.display = 'none';
+            }
+
+            return isValid;
+        }
+
+        // Función que cambia el borde al enfocar el campo
+        function inputOnFocus(input) {
+            input.classList.remove('input-error');
+            const warning = document.getElementById('warning' + input.name.charAt(0).toUpperCase() + input.name.slice(1));
+            if (warning.style.display === 'block') {
+                warning.style.display = 'none';
+            }
+        }
+
+        // Función que muestra los mensajes de advertencia si el campo está vacío
+        function inputOnBlur(input) {
+            const warning = document.getElementById('warning' + input.name.charAt(0).toUpperCase() + input.name.slice(1));
+            if (input.value.trim() === '') {
+                warning.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

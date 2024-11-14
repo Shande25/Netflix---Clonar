@@ -1,94 +1,84 @@
-let inputTouched = {
-    email: false,
-    password: false
-}
-
-let codeLoginActive = false; // Variable para controlar el estado de la funcionalidad
-
-const inputEmail = document.getElementById("inputEmail");
-const inputPassword = document.getElementById("inputPassword");
-const inputWrapperEmail = document.getElementById("input-wrapper-email");
-const inputWrapperPassword = document.getElementById("input-wrapper-password");
-const warningEmail = document.getElementById("warningEmail");
-const warningPassword = document.getElementById("warningPassword");
-
-const inputOnBlur = (ev) => {
-    if (inputTouched.email) {
-        if (!validateEmail(inputEmail.value) && !validatePhone(inputEmail.value)) {
-            warningEmail.style.display = "block";
-            inputEmail.style.borderBottom = '2px solid #e87c03';
-        } else {
-            warningEmail.style.display = "none";
-            inputEmail.style.borderBottom = "none";
-        }
-    }
-    if (inputTouched.password) {
-        if (!(inputPassword.value.length >= 4 && inputPassword.value.length <= 60)) {
-            warningPassword.style.display = "block";
-            inputPassword.style.borderBottom = '2px solid #e87c03';
-        } else {
-            warningPassword.style.display = "none";
-            inputPassword.style.borderBottom = "none";
-        }
-    }
-}
-
-function toggleCodeLogin() {
-    // Elementos de la interfaz
+// Función para alternar entre los formularios de inicio de sesión
+const toggleCodeLogin = () => {
+    const codeLogin = document.getElementById("codeLogin");
     const passwordWrapper = document.getElementById("passwordWrapper");
-    const signinButtonWrapper = document.getElementById("loginButtonWrapper");
     const signinCodeButton = document.getElementById("signinCodeButton");
 
-    // Verificar si el mensaje ya existe, si no, lo creamos
-    let inaccessibleMessage = document.getElementById("inaccessibleMessage");
-    if (!inaccessibleMessage) {
-        inaccessibleMessage = document.createElement("div");
-        inaccessibleMessage.id = "inaccessibleMessage";
-        inaccessibleMessage.style.color = "#e87c03";
-        inaccessibleMessage.style.fontSize = "16px";
-        inaccessibleMessage.style.marginTop = "20px";
-        inaccessibleMessage.textContent = "Función no accesible";
-        // Añadirlo al final del formulario o en el lugar que desees
-        document.querySelector(".login").appendChild(inaccessibleMessage);
-    }
-
-    // Si ya está activa la opción de código, mostrar la contraseña
-    if (codeLoginActive) {
-        // Restaurar la sección de contraseña
-        passwordWrapper.style.display = "block"; // Mostrar la sección de contraseña
-        signinButtonWrapper.style.display = "block"; // Mostrar el botón de inicio de sesión
-        inaccessibleMessage.style.display = "none"; // Ocultar el mensaje de "Función no accesible"
-
-        signinCodeButton.textContent = "Usar un código de inicio de sesión"; // Restablecer el texto del botón
-        signinCodeButton.disabled = false; // Habilitar el botón nuevamente
-
-        // Cambiar el estado a desactivado
-        codeLoginActive = false;
+    // Si el formulario con el código está oculto, lo mostramos y ocultamos el formulario de contraseña
+    if (codeLogin.style.display === "none") {
+        codeLogin.style.display = "block"; // Muestra el formulario para ingresar el código
+        passwordWrapper.style.display = "none"; // Oculta el formulario de contraseña
+        signinCodeButton.textContent = "Usar contraseña"; // Cambia el texto del botón a "Usar contraseña"
     } else {
-        // Ocultar la sección de contraseña y el botón de inicio de sesión
-        passwordWrapper.style.display = "none"; 
-        signinButtonWrapper.style.display = "none"; 
-
-        // Mostrar el mensaje de "Función no accesible"
-        inaccessibleMessage.style.display = "block"; 
-        signinCodeButton.textContent = "Función no accesible"; // Cambiar el texto del botón
-        signinCodeButton.disabled = true; // Deshabilitar el botón
-
-        // Cambiar el estado a activado
-        codeLoginActive = true;
+        // Si el formulario con el código está visible, lo ocultamos y mostramos el formulario de contraseña
+        codeLogin.style.display = "none"; // Oculta el formulario para ingresar el código
+        passwordWrapper.style.display = "block"; // Muestra el formulario de contraseña
+        signinCodeButton.textContent = "Usar un código de inicio de sesión"; // Cambia el texto del botón a "Usar un código de inicio de sesión"
     }
 }
 
-const inputOnFocus = (ev) => {
-    inputTouched[ev.name] = true;
+// Función para validar el correo electrónico
+const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
 }
 
-const validateEmail = email => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+// Función para validar la contraseña
+const validatePassword = (password) => {
+    return password.length >= 4 && password.length <= 60;
 }
 
-const validatePhone = email => {
-    const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-    return re.test(String(email).toLowerCase());
+// Función para validar el código de inicio de sesión
+const validateCode = (code) => {
+    const regex = /^[0-9]{6}$/;
+    return regex.test(code);
 }
+
+// Función para manejar la validación del formulario al intentar iniciar sesión
+const handleLoginSubmit = (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("inputEmail").value;
+    const password = document.getElementById("inputPassword").value;
+    const code = document.getElementById("codeInput").value;
+
+    const emailWarning = document.getElementById("warningEmail");
+    const passwordWarning = document.getElementById("warningPassword");
+    const codeWarning = document.getElementById("warningCode");
+
+    let isValid = true;
+
+    // Validación del correo electrónico
+    if (!validateEmail(email)) {
+        emailWarning.style.display = "block";
+        isValid = false;
+    } else {
+        emailWarning.style.display = "none";
+    }
+
+    // Validación de la contraseña
+    if (password && !validatePassword(password)) {
+        passwordWarning.style.display = "block";
+        isValid = false;
+    } else {
+        passwordWarning.style.display = "none";
+    }
+
+    // Validación del código, solo si se está utilizando el inicio de sesión con código
+    if (code && !validateCode(code)) {
+        codeWarning.style.display = "block";
+        isValid = false;
+    } else {
+        codeWarning.style.display = "none";
+    }
+
+    // Si todo es válido, se realiza la acción correspondiente
+    if (isValid) {
+        // Aquí puedes agregar la lógica para enviar el formulario o realizar una acción, como la autenticación
+        console.log("Formulario válido. Procediendo con el inicio de sesión.");
+        // Ejemplo: document.getElementById("loginForm").submit();
+    }
+}
+
+// Agregar el evento para manejar el envío del formulario
+document.getElementById("loginForm").addEventListener("submit", handleLoginSubmit);
