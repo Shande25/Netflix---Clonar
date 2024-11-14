@@ -25,30 +25,28 @@
                         Por favor, ingresa un correo electrónico o número de teléfono válido.
                     </div>
                 </div>
-                
-                <div class="input-text">
-                    <input type="password"  style="background-color: rgba(0, 0, 0, 0.6);" id="inputPassword" name="password" placeholder="Contraseña" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)"/>
+                <!-- Campo de contraseña -->
+                <div class="input-text" id="passwordWrapper">
+                    <input type="password" style="background-color: rgba(0, 0, 0, 0.6);" id="inputPassword" name="password" placeholder="Contraseña" onfocus="inputOnFocus(this)" onblur="inputOnBlur(this)" />
                     <div class="warning-input" id="warningPassword">
                         Tu contraseña debe contener entre 4 y 60 caracteres.
                     </div>
                 </div>
-                
-                <div>
-                    <button class="signin-button">Iniciar sesión</button>
+
+                <!-- Botón de Iniciar sesión -->
+                <div id="loginButtonWrapper">
+                    <button class="signin-button" id="signinButton">Iniciar sesión</button>
                 </div>
+
+                <!-- Botón para usar código de inicio de sesión -->
                 <div>
-                    
+                    <button class="signin-button-code" id="signinCodeButton" onclick="toggleCodeLogin()">Usar un código de inicio de sesión</button>
                 </div>
-                <div>
-                    <button class="signin-button">Iniciar sesión</button>
-                </div>
+               
                 <div class="remember-flex">
                     <div>
                         <input type="checkbox">
                         <label class="color_text">Recuérdame</label>
-                    </div>
-                    <div class="help">
-                        <a class="color_text" href="#">¿Necesitas ayuda?</a>
                     </div>
                 </div>
                 <br>
@@ -63,7 +61,7 @@
     </div>
     <div class="bottom">
         <div class="bottom-width">
-            ¿Preguntas? Llama al <a href="tel:1-844-542-4813" class="tel-link">1-844-542-4813</a>
+            ¿Preguntas? Llama al <a href="tel:1-844-542-4813" class="tel-link"> 1 (408) 469-4467 (USA)</a>
             <div>
                 <ul class="bottom-flex">
                     <li class="list-bottom">
